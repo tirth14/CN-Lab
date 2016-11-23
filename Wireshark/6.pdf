@@ -1,0 +1,250 @@
+%!
+%!PS-Adobe-2.0
+%
+% Wireshark - Network traffic analyzer
+% By Gerald Combs <gerald@wireshark.org>
+% Copyright 1998 Gerald Combs
+%
+%%Creator: Wireshark
+%%Title: Wireshark output
+%%DocumentFonts: Helvetica Monaco
+%%EndComments
+%!
+
+%
+% Ghostscript http://ghostscript.com/ can convert postscript to pdf files.
+%
+% To convert this postscript file to pdf, type (for US letter format):
+% ps2pdf filename.ps
+%
+% or (for A4 format):
+% ps2pdf -sPAPERSIZE=a4 filename.ps
+%
+% ... and of course replace filename.ps by your current filename.
+%
+% The pdfmark's below will help converting to a pdf file, and have no
+% effect when printing the postscript directly.
+% 
+
+%   This line is necessary if the file should be printable, and not just used
+%   for distilling into PDF:
+%
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+%
+%   This tells PDF viewers to display bookmarks when the document is opened:
+%
+[/PageMode /UseOutlines /DOCVIEW pdfmark
+
+% Get the Imagable Area of the page
+clippath pathbbox
+
+% Set vmax to the vertical size of the page,
+% hmax to the horizontal size of the page.
+/vmax exch def
+/hmax exch def
+pop pop		% junk
+
+% 1/2-inch margins
+/lmargin 36 def					% left margin
+/tmargin vmax 56 sub def		% top margin
+/bmargin 36 def					% bottom margin
+/pagenumtab hmax 36 sub def		% right margin
+
+% Counters
+/thispagenum 1 def
+
+% Strings
+/pagenostr 7 string def
+
+
+/formfeed {
+	printpagedecorations
+	showpage
+	
+	% we need a new current point after showpage is done
+	lmargin		% X
+	vpos 		% Y
+	moveto
+	/vpos tmargin def
+} def
+
+% Prints text with possible indenting
+/putline_single {
+	exch 10 mul lmargin add		% X
+	vpos 						% Y
+	moveto
+	show
+
+	/vpos vpos 10 sub def
+
+	vpos 5 sub bmargin le 		% is vpos <= bottom margin?
+	{
+		formfeed
+	}
+	if							% then formfeed and start at top
+} def
+
+
+% Prints text with possible indenting and line wrap
+/putline {
+	/text exch def
+	/indent exch def
+	
+	% wrapat = width / sizeof font (remember: monospaced font)
+	/pagewidth pagenumtab lmargin sub def
+	/cwidth (A) stringwidth pop def
+	/wrapat pagewidth cwidth div cvi def
+		
+	text length wrapat le {
+		% print line
+		indent text 0 text length getinterval putline_single
+	}{
+		% print the lines first part
+		indent text 0 wrapat getinterval putline_single
+		% print wrapped rest
+		indent text wrapat text length wrapat sub getinterval putline
+	}
+	ifelse
+} def
+
+
+% Prints the page number at the top right
+/printpagedecorations {
+	gsave
+		% Set the font to 8 point
+		/Helvetica findfont 8 scalefont setfont
+
+		% title
+		lmargin						% X
+		vmax 36 sub					% Y
+		moveto
+		ws_pagetitle show
+
+		% this page number
+		pagenumtab (Page ) stringwidth pop sub thispagenum pagenostr cvs stringwidth pop sub 		% X
+		vmax 36 sub					% Y
+		moveto
+		(Page ) show
+		thispagenum pagenostr cvs show
+
+		% thispagenum++
+		/thispagenum thispagenum 1 add def
+		
+		% line at top of page
+		lmargin						% X
+		vmax 38 sub					% Y
+		moveto
+		
+		pagenumtab					% X
+		vmax 38 sub					% Y
+		lineto
+		stroke
+		
+		% line at bottom of page
+		lmargin						% X
+		bmargin						% Y
+		moveto
+		
+		pagenumtab					% X
+		bmargin						% Y
+		lineto
+		stroke
+		
+	grestore
+} def
+	
+% Reset the vertical position
+/vpos tmargin def
+
+% Set the font to 8 point
+/Monaco findfont 8 scalefont setfont
+
+%% the page title
+/ws_pagetitle (/tmp/wireshark_pcapng_any_20160909023433_WjHe4F - Wireshark 2.0.2 (SVN Rev Unknown from unknown)) def
+
+0 (No.     Time           Source                Destination           Protocol Length Info) putline
+[/Dest /__frame38__ /Title (     38 7.344946202    10.42.0.52            128.119.245.12        TCP      707    60174 → 80 [PSH, ACK] Seq=1 Ack=1 Win=29312 Len=639 TSval=5074188 TSecr=2346223528)   /OUT pdfmark
+[/View [/XYZ -4 currentpoint matrix currentmatrix matrix defaultmatrix
+matrix invertmatrix matrix concatmatrix transform exch pop 20 add null]
+/Dest /__frame38__ /DEST pdfmark
+0 (     38 7.344946202    10.42.0.52            128.119.245.12        TCP      707    60174 → 80 [PSH, ACK] Seq=1 Ack=1 Win=29312 Len=639 TSval=5074188 TSecr=2346223528) putline
+0 () putline
+0 (Frame 38: 707 bytes on wire \(5656 bits\), 707 bytes captured \(5656 bits\) on interface 0) putline
+0 (Linux cooked capture) putline
+0 (Internet Protocol Version 4, Src: 10.42.0.52, Dst: 128.119.245.12) putline
+0 (Transmission Control Protocol, Src Port: 60174 \(60174\), Dst Port: 80 \(80\), Seq: 1, Ack: 1, Len: 639) putline
+1 (Source Port: 60174) putline
+1 (Destination Port: 80) putline
+1 ([Stream index: 3]) putline
+1 ([TCP Segment Len: 639]) putline
+1 (Sequence number: 1    \(relative sequence number\)) putline
+1 ([Next sequence number: 640    \(relative sequence number\)]) putline
+1 (Acknowledgment number: 1    \(relative ack number\)) putline
+1 (Header Length: 32 bytes) putline
+1 (Flags: 0x018 \(PSH, ACK\)) putline
+2 (000. .... .... = Reserved: Not set) putline
+2 (...0 .... .... = Nonce: Not set) putline
+2 (.... 0... .... = Congestion Window Reduced \(CWR\): Not set) putline
+2 (.... .0.. .... = ECN-Echo: Not set) putline
+2 (.... ..0. .... = Urgent: Not set) putline
+2 (.... ...1 .... = Acknowledgment: Set) putline
+2 (.... .... 1... = Push: Set) putline
+2 (.... .... .0.. = Reset: Not set) putline
+2 (.... .... ..0. = Syn: Not set) putline
+2 (.... .... ...0 = Fin: Not set) putline
+2 ([TCP Flags: *******AP***]) putline
+1 (Window size value: 229) putline
+1 ([Calculated window size: 29312]) putline
+1 ([Window size scaling factor: 128]) putline
+1 (Checksum: 0x60ab [validation disabled]) putline
+1 (Urgent pointer: 0) putline
+1 (Options: \(12 bytes\), No-Operation \(NOP\), No-Operation \(NOP\), Timestamps) putline
+1 ([SEQ/ACK analysis]) putline
+0 (Data \(639 bytes\)) putline
+0 () putline
+0 (0000  50 4f 53 54 20 2f 77 69 72 65 73 68 61 72 6b 2d   POST /wireshark-) putline
+0 (0010  6c 61 62 73 2f 6c 61 62 33 2d 31 2d 72 65 70 6c   labs/lab3-1-repl) putline
+0 (0020  79 2e 68 74 6d 20 48 54 54 50 2f 31 2e 31 0d 0a   y.htm HTTP/1.1..) putline
+0 (0030  48 6f 73 74 3a 20 67 61 69 61 2e 63 73 2e 75 6d   Host: gaia.cs.um) putline
+0 (0040  61 73 73 2e 65 64 75 0d 0a 43 6f 6e 6e 65 63 74   ass.edu..Connect) putline
+0 (0050  69 6f 6e 3a 20 6b 65 65 70 2d 61 6c 69 76 65 0d   ion: keep-alive.) putline
+0 (0060  0a 43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a   .Content-Length:) putline
+0 (0070  20 31 35 32 33 32 31 0d 0a 43 61 63 68 65 2d 43    152321..Cache-C) putline
+0 (0080  6f 6e 74 72 6f 6c 3a 20 6d 61 78 2d 61 67 65 3d   ontrol: max-age=) putline
+0 (0090  30 0d 0a 4f 72 69 67 69 6e 3a 20 68 74 74 70 3a   0..Origin: http:) putline
+0 (00a0  2f 2f 67 61 69 61 2e 63 73 2e 75 6d 61 73 73 2e   //gaia.cs.umass.) putline
+0 (00b0  65 64 75 0d 0a 55 70 67 72 61 64 65 2d 49 6e 73   edu..Upgrade-Ins) putline
+0 (00c0  65 63 75 72 65 2d 52 65 71 75 65 73 74 73 3a 20   ecure-Requests: ) putline
+0 (00d0  31 0d 0a 55 73 65 72 2d 41 67 65 6e 74 3a 20 4d   1..User-Agent: M) putline
+0 (00e0  6f 7a 69 6c 6c 61 2f 35 2e 30 20 28 58 31 31 3b   ozilla/5.0 \(X11;) putline
+0 (00f0  20 4c 69 6e 75 78 20 78 38 36 5f 36 34 29 20 41    Linux x86_64\) A) putline
+0 (0100  70 70 6c 65 57 65 62 4b 69 74 2f 35 33 37 2e 33   ppleWebKit/537.3) putline
+0 (0110  36 20 28 4b 48 54 4d 4c 2c 20 6c 69 6b 65 20 47   6 \(KHTML, like G) putline
+0 (0120  65 63 6b 6f 29 20 43 68 72 6f 6d 65 2f 35 32 2e   ecko\) Chrome/52.) putline
+0 (0130  30 2e 32 37 34 33 2e 38 32 20 53 61 66 61 72 69   0.2743.82 Safari) putline
+0 (0140  2f 35 33 37 2e 33 36 0d 0a 43 6f 6e 74 65 6e 74   /537.36..Content) putline
+0 (0150  2d 54 79 70 65 3a 20 6d 75 6c 74 69 70 61 72 74   -Type: multipart) putline
+0 (0160  2f 66 6f 72 6d 2d 64 61 74 61 3b 20 62 6f 75 6e   /form-data; boun) putline
+0 (0170  64 61 72 79 3d 2d 2d 2d 2d 57 65 62 4b 69 74 46   dary=----WebKitF) putline
+0 (0180  6f 72 6d 42 6f 75 6e 64 61 72 79 49 77 4f 34 64   ormBoundaryIwO4d) putline
+0 (0190  63 48 44 36 77 70 5a 65 66 52 44 0d 0a 41 63 63   cHD6wpZefRD..Acc) putline
+0 (01a0  65 70 74 3a 20 74 65 78 74 2f 68 74 6d 6c 2c 61   ept: text/html,a) putline
+0 (01b0  70 70 6c 69 63 61 74 69 6f 6e 2f 78 68 74 6d 6c   pplication/xhtml) putline
+0 (01c0  2b 78 6d 6c 2c 61 70 70 6c 69 63 61 74 69 6f 6e   +xml,application) putline
+0 (01d0  2f 78 6d 6c 3b 71 3d 30 2e 39 2c 69 6d 61 67 65   /xml;q=0.9,image) putline
+0 (01e0  2f 77 65 62 70 2c 2a 2f 2a 3b 71 3d 30 2e 38 0d   /webp,*/*;q=0.8.) putline
+0 (01f0  0a 52 65 66 65 72 65 72 3a 20 68 74 74 70 3a 2f   .Referer: http:/) putline
+0 (0200  2f 67 61 69 61 2e 63 73 2e 75 6d 61 73 73 2e 65   /gaia.cs.umass.e) putline
+0 (0210  64 75 2f 77 69 72 65 73 68 61 72 6b 2d 6c 61 62   du/wireshark-lab) putline
+0 (0220  73 2f 54 43 50 2d 77 69 72 65 73 68 61 72 6b 2d   s/TCP-wireshark-) putline
+0 (0230  66 69 6c 65 31 2e 68 74 6d 6c 0d 0a 41 63 63 65   file1.html..Acce) putline
+0 (0240  70 74 2d 45 6e 63 6f 64 69 6e 67 3a 20 67 7a 69   pt-Encoding: gzi) putline
+0 (0250  70 2c 20 64 65 66 6c 61 74 65 0d 0a 41 63 63 65   p, deflate..Acce) putline
+0 (0260  70 74 2d 4c 61 6e 67 75 61 67 65 3a 20 65 6e 2d   pt-Language: en-) putline
+0 (0270  55 53 2c 65 6e 3b 71 3d 30 2e 38 0d 0a 0d 0a      US,en;q=0.8....) putline
+
+printpagedecorations
+showpage
+
+%%EOF
+
